@@ -1,0 +1,95 @@
+------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\SCIENCE\Documents\stata13\auto.log
+  log type:  text
+ opened on:  26 Feb 2024, 23:11:28
+
+. import delimited C:\Users\SCIENCE\Documents\cross.csv
+no; data in memory would be lost
+r(4);
+
+. gen date=orderdate
+
+. tsset c
+        time variable:  c, 68978 to 4748320, but with gaps
+                delta:  1 unit
+
+. regress c pf lf q t
+
+      Source |       SS       df       MS              Number of obs =      90
+-------------+------------------------------           F(  4,    85) =  403.84
+       Model |  1.2015e+14     4  3.0038e+13           Prob > F      =  0.0000
+    Residual |  6.3223e+12    85  7.4380e+10           R-squared     =  0.9500
+-------------+------------------------------           Adj R-squared =  0.9477
+       Total |  1.2647e+14    89  1.4210e+12           Root MSE      =  2.7e+05
+
+------------------------------------------------------------------------------
+           c |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+          pf |   .6389832   .2484249     2.57   0.012      .145048    1.132918
+          lf |   -3910007   749627.8    -5.22   0.000     -5400468    -2419546
+           q |    2026802   59868.68    33.85   0.000      1907767     2145837
+           t |   53097.46   20574.05     2.58   0.012     12190.74    94004.19
+       _cons |    1483154   371235.9     4.00   0.000     745037.2     2221270
+------------------------------------------------------------------------------
+
+. predict q, r
+q already defined
+r(110);
+
+. predict t,  r
+t already defined
+r(110);
+
+. estat durbinalt, small force
+
+Number of gaps in sample:  89
+
+Durbin's alternative test for autocorrelation
+---------------------------------------------------------------------------
+    lags(p)  |          F                  df                 Prob > F
+-------------+-------------------------------------------------------------
+       1     |            .           (  0,   85 )                   .
+---------------------------------------------------------------------------
+                        H0: no serial correlation
+
+. estat dwatson
+
+Number of gaps in sample:  89
+
+Durbin-Watson d-statistic(  5,    90) =         0
+
+. estat bgodfrey, lags(2)
+
+Number of gaps in sample:  89
+
+Breusch-Godfrey LM test for autocorrelation
+---------------------------------------------------------------------------
+    lags(p)  |          chi2               df                 Prob > chi2
+-------------+-------------------------------------------------------------
+       2     |          0.000               2                   1.0000
+---------------------------------------------------------------------------
+                        H0: no serial correlation
+
+. # Autocorrelation is when the error term correlate or depends on the previous.
+Unknown #command
+
+. Autocorrelation is when the error term correlate or depends on the previous.
+unrecognized command:  Autocorrelation
+r(199);
+
+. predict t, resid
+t already defined
+r(110);
+
+. predict what, resid
+(2733 missing values generated)
+
+. tsline what
+
+. log close
+      name:  <unnamed>
+       log:  C:\Users\SCIENCE\Documents\stata13\auto.log
+  log type:  text
+ closed on:  26 Feb 2024, 23:21:18
+------------------------------------------------------------------------------------------------------------------------
