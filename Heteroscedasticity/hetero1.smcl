@@ -1,0 +1,171 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\SCIENCE\Documents\stata13\Heteroscedasticity.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}28 Feb 2024, 22:08:51
+
+{com}. import delimited C:\Users\SCIENCE\Documents\cross.csv
+{res}{text}(6 vars, 90 obs)
+{com}. {txt}*(1 variable, 2823 observations pasted into data editor)
+{com}
+. gen date=orderdate
+
+. ttsset c
+{err}unrecognized command:  ttsset
+{txt}{search r(199):r(199);}
+
+{com}. tsset c
+{res}{txt}{col 9}time variable:  {res}{col 25}c, 68978 to 4748320, but with gaps
+{txt}{col 17}delta:  {res}1 unit
+
+{com}. regress c i q pf lf
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      90
+{txt}{hline 13}{char +}{hline 30}           F(  4,    85) ={res}  404.43
+    {txt}   Model {char |} {res} 1.2016e+14     4  3.0040e+13           {txt}Prob > F      = {res} 0.0000
+    {txt}Residual {char |} {res} 6.3136e+12    85  7.4278e+10           {txt}R-squared     = {res} 0.9501
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.9477
+    {txt}   Total {char |} {res} 1.2647e+14    89  1.4210e+12           {txt}Root MSE      = {res} 2.7e+05
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}           c{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}i {c |}{col 14}{res}{space 2} 99313.97{col 26}{space 2} 38122.27{col 37}{space 1}    2.61{col 46}{space 3}0.011{col 54}{space 4} 23516.68{col 67}{space 3} 175111.3
+{txt}{space 11}q {c |}{col 14}{res}{space 2}  2310417{col 26}{space 2} 124454.6{col 37}{space 1}   18.56{col 46}{space 3}0.000{col 54}{space 4}  2062968{col 67}{space 3}  2557866
+{txt}{space 10}pf {c |}{col 14}{res}{space 2} 1.091516{col 26}{space 2} .1127786{col 37}{space 1}    9.68{col 46}{space 3}0.000{col 54}{space 4} .8672822{col 67}{space 3}  1.31575
+{txt}{space 10}lf {c |}{col 14}{res}{space 2} -2781588{col 26}{space 2}   682789{col 37}{space 1}   -4.07{col 46}{space 3}0.000{col 54}{space 4} -4139155{col 67}{space 3} -1424021
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 559879.5{col 26}{space 2} 417900.3{col 37}{space 1}    1.34{col 46}{space 3}0.184{col 54}{space 4}-271018.3{col 67}{space 3}  1390777
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. predict residuals, resid
+{txt}(2733 missing values generated)
+
+{com}. rvpplot q
+{res}
+{com}. rvfplot, recast(scatter)
+{res}
+{com}. hettest
+
+{txt}Breusch-Pagan / Cook-Weisberg test for heteroskedasticity 
+         Ho: Constant variance
+{p 9 20}Variables: fitted values of c
+
+{col 10}chi2({res}1{txt}){col 23}={res}    17.37
+{txt}{col 10}Prob > chi2{col 23}={res}   0.0000
+
+{com}. estat hettest
+
+{txt}Breusch-Pagan / Cook-Weisberg test for heteroskedasticity 
+         Ho: Constant variance
+{p 9 20}Variables: fitted values of c
+
+{col 10}chi2({res}1{txt}){col 23}={res}    17.37
+{txt}{col 10}Prob > chi2{col 23}={res}   0.0000
+
+{com}. estat hettest c pf lf i
+{err}c may not be specified
+{txt}{search r(499):r(499);}
+
+{com}. estat hettest c pf lf
+{err}c may not be specified
+{txt}{search r(499):r(499);}
+
+{com}. estat hettest c
+
+{txt}Breusch-Pagan / Cook-Weisberg test for heteroskedasticity 
+         Ho: Constant variance
+{p 9 20}Variables: c
+
+{col 10}chi2({res}1{txt}){col 23}={res}    18.90
+{txt}{col 10}Prob > chi2{col 23}={res}   0.0000
+
+{com}. estat szroeter c pf lf i
+
+{txt}Szroeter's test for homoskedasticity
+
+{col 5}Ho: variance constant
+{col 5}Ha: variance monotonic in variable
+
+{hline 13}{c TT}{hline 25}
+    Variable {c |}      chi2   df      p 
+{hline 13}{c +}{hline 25}
+{space 11}c {c |} {res}{col 16}    13.28{col 24}    1{col 33}0.0003 #
+{txt}{space 10}pf {c |} {res}{col 16}     4.51{col 24}    1{col 33}0.0338 #
+{txt}{space 10}lf {c |} {res}{col 16}     0.00{col 24}    1{col 33}0.9825 #
+{txt}{space 11}i {c |} {res}{col 16}     4.46{col 24}    1{col 33}0.0347 #
+{txt}{hline 13}{c BT}{hline 25}
+{ralign 39:{it:# unadjusted p-values}}
+
+{com}. estat szroeter q c c pf lf i
+
+{txt}Szroeter's test for homoskedasticity
+
+{col 5}Ho: variance constant
+{col 5}Ha: variance monotonic in variable
+
+{hline 13}{c TT}{hline 25}
+    Variable {c |}      chi2   df      p 
+{hline 13}{c +}{hline 25}
+{space 11}q {c |} {res}{col 16}    10.02{col 24}    1{col 33}0.0015 #
+{txt}{space 11}c {c |} {res}{col 16}    13.28{col 24}    1{col 33}0.0003 #
+{txt}{space 11}c {c |} {res}{col 16}    13.28{col 24}    1{col 33}0.0003 #
+{txt}{space 10}pf {c |} {res}{col 16}     4.51{col 24}    1{col 33}0.0338 #
+{txt}{space 10}lf {c |} {res}{col 16}     0.00{col 24}    1{col 33}0.9825 #
+{txt}{space 11}i {c |} {res}{col 16}     4.46{col 24}    1{col 33}0.0347 #
+{txt}{hline 13}{c BT}{hline 25}
+{ralign 39:{it:# unadjusted p-values}}
+
+{com}. ladder q
+
+{txt}Transformation{col 24}formula{col 46}chi2(2){col 60}P(chi2)
+{hline 66}
+cubic                  q^3                {res}    44.36        0.000
+{txt}square                 q^2                {res}    27.38        0.000
+{txt}identity               q                  {res}    10.95        0.004
+{txt}square root            sqrt(q)            {res}    14.47        0.001
+{txt}log                    log(q)             {res}    19.92        0.000
+{txt}1/(square root)        1/sqrt(q)          {res}     8.58        0.014
+{txt}inverse                1/q                {res}    20.13        0.000
+{txt}1/square               1/(q^2)            {res}    44.38        0.000
+{txt}1/cubic                1/(q^3)            {res}    63.14        0.000
+
+{com}. gen logq=log(q)
+{txt}(2733 missing values generated)
+
+{com}. regress c i q pf lf
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      90
+{txt}{hline 13}{char +}{hline 30}           F(  4,    85) ={res}  404.43
+    {txt}   Model {char |} {res} 1.2016e+14     4  3.0040e+13           {txt}Prob > F      = {res} 0.0000
+    {txt}Residual {char |} {res} 6.3136e+12    85  7.4278e+10           {txt}R-squared     = {res} 0.9501
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.9477
+    {txt}   Total {char |} {res} 1.2647e+14    89  1.4210e+12           {txt}Root MSE      = {res} 2.7e+05
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}           c{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}i {c |}{col 14}{res}{space 2} 99313.97{col 26}{space 2} 38122.27{col 37}{space 1}    2.61{col 46}{space 3}0.011{col 54}{space 4} 23516.68{col 67}{space 3} 175111.3
+{txt}{space 11}q {c |}{col 14}{res}{space 2}  2310417{col 26}{space 2} 124454.6{col 37}{space 1}   18.56{col 46}{space 3}0.000{col 54}{space 4}  2062968{col 67}{space 3}  2557866
+{txt}{space 10}pf {c |}{col 14}{res}{space 2} 1.091516{col 26}{space 2} .1127786{col 37}{space 1}    9.68{col 46}{space 3}0.000{col 54}{space 4} .8672822{col 67}{space 3}  1.31575
+{txt}{space 10}lf {c |}{col 14}{res}{space 2} -2781588{col 26}{space 2}   682789{col 37}{space 1}   -4.07{col 46}{space 3}0.000{col 54}{space 4} -4139155{col 67}{space 3} -1424021
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 559879.5{col 26}{space 2} 417900.3{col 37}{space 1}    1.34{col 46}{space 3}0.184{col 54}{space 4}-271018.3{col 67}{space 3}  1390777
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{com}. hettest,rhs fstat
+
+{txt}Breusch-Pagan / Cook-Weisberg test for heteroskedasticity 
+         Ho: Constant variance
+{p 9 20}Variables: i q pf lf
+
+{col 10}F({res}4{txt} , {res}85{txt}){col 23}={res}     7.34
+{txt}{col 10}Prob > F{col 23}={res}   0.0000
+
+{com}. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\SCIENCE\Documents\stata13\Heteroscedasticity.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}28 Feb 2024, 22:44:12
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
